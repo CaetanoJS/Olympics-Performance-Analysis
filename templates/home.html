@@ -1,33 +1,16 @@
 <head>
     <title>Suggestions</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"></script>
 </head>
 
 <body>
-
-Search: <input type="text" id="search_form_input"></input>
+<a href="" id="my_link">my link hee</a>
+<input type="text" id="search_form_input"></input>
 
 <div id="place_for_suggestions"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-<script>
-$("#search_form_input").keyup(function(){
-    var text = $(this).val();
-
-    $.ajax({
-      url: "/graphs",
-      type: "get",
-      data: {jsdata: text},
-      success: function(response) {
-        $("#place_for_suggestions").html(response);
-      },
-      error: function(xhr) {
-        //Do Something to handle error
-      }
-    });
-});
-</script>
-
+<script src="../static/scripts.js"></script>
 </body>
 
 </html>

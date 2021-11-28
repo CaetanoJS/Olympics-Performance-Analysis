@@ -16,3 +16,8 @@ def graphs():
         suggestions_list = ['caetano', 'PDE']
     
     return render_template('graphs.html', suggestions=suggestions_list)
+
+@app.route('/mixedGraphs')
+def mixedGraphs():
+    
+    return render_template('mixedGraphs.html')
