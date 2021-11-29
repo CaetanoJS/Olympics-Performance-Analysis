@@ -1,0 +1,30 @@
+
+<div class="main">
+    <div class="input-group">
+        <input id="search-text" type="text" class="form-control" placeholder="Search by country">
+        <div class="input-group-append">
+        <button id="search-button" class="btn btn-secondary" type="button">
+            <i class="fa fa-search"></i>
+        </button>
+        </div>
+    </div>
+</div>
+
+<div id="place_for_graphs"></div>
+<script>
+    $('#search-button').click(function(e){
+    var getValue = $('#search-text').val();
+    console.log(getValue)
+    $.ajax({
+            url: "/findByCountry",
+            type: "get",//type of posting the data
+            data: {jsdata: getValue},
+            success: function(response) {
+            $("#place_for_graphs").html(response);
+        },
+            error: function(xhr, ajaxOptions, thrownError){
+            //what to do in error
+            },
+    });
+    });
+</script>

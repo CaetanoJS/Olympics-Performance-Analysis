@@ -6,18 +6,17 @@ app = Flask(__name__)
 def hello_world():
     return render_template('home.html')
 
-@app.route('/graphs')
-def graphs():
-    text = request.args.get('jsdata')
-
-    if text == 'sss':
-        suggestions_list = ['teste', '2']
-    else:
-        suggestions_list = ['caetano', 'PDE']
-    
-    return render_template('graphs.html', suggestions=suggestions_list)
-
 @app.route('/mixedGraphs')
 def mixedGraphs():
-    
     return render_template('mixedGraphs.html')
+
+@app.route('/graphByCountry')
+def graphByCountry():
+    return render_template('graphByCountry.html')
+
+@app.route('/findByCountry')
+def findByCountry():
+    text = request.args.get('jsdata')
+    label = []
+    value = []
+    return render_template('graphs.html', text=text, label=label, value=value)
