@@ -16,7 +16,7 @@
     var getValue = $('#search-text').val();
     console.log(getValue)
     $.ajax({
-            url: "/findByCountry",
+            url: "/findMedalsByCountry",
             type: "get",//type of posting the data
             data: {jsdata: getValue},
             success: function(response) {

@@ -3,16 +3,17 @@
 <script>
     var ctx = document.getElementById("chart").getContext("2d");
     var mixedChart = new Chart(ctx, {
-    data: {
-        datasets: [{
-            type: 'line',
-            label: 'Line Dataset',
-            data: [50, 50, 50, 50],
-        }],
-        labels: ['January', 'February', 'March', 'April']
-    },
-    options: {
-        responsive: true
-    }
+        type: 'bar',
+        data: {
+            datasets: [{
+                label: 'Medals',
+                data: {{ values | safe }},
+                backgroundColor: ["rgba(205, 127, 50, 1)", "rgb(211,211,211)", "rgb(255,215,0)"],
+            }],
+            labels: {{ labels | safe }}
+        },
+        options: {
+            responsive: true
+        }
 });
 </script> 

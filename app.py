@@ -10,13 +10,35 @@ def hello_world():
 def mixedGraphs():
     return render_template('mixedGraphs.html')
 
-@app.route('/graphByCountry')
-def graphByCountry():
-    return render_template('graphByCountry.html')
+@app.route('/countryMedals')
+def countryMedals():
+    return render_template('countryMedals.html')
 
-@app.route('/findByCountry')
+@app.route('/findMedalsByCountry')
 def findByCountry():
     text = request.args.get('jsdata')
-    label = []
-    value = []
-    return render_template('graphs.html', text=text, label=label, value=value)
+    labels = ['Bronze','Silver','Gold']
+    values = []
+
+    if not values:
+        error_messege = 'Country not found'
+        return render_template("notFound.html", error_messege=error_messege)
+
+    return render_template('graphs.html', text=text, labels=labels, values=values)
+
+@app.route('/competidorMedals')
+def competidorMedals():
+    return render_template('competidorMedals.html')
+
+@app.route('/findMedalsByCompetidor')
+def findMedalsByCompetidor():
+    text = request.args.get('jsdata')
+    labels = ['Bronze','Silver','Gold']
+    values = []
+
+    if not values:
+        error_messege = 'Competidor not found'
+        return render_template("notFound.html", error_messege=error_messege)
+
+    return render_template('graphs.html', text=text, labels=labels, values=values)
+

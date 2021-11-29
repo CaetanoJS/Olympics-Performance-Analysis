@@ -27,3 +27,18 @@ $('#graph_by_country').click(function(e){
         },
   });
 });
+
+$('#competidor_medals').click(function(e){
+  e.preventDefault();
+  $.ajax({
+        url: "/competidorMedals",
+        type: "get",//type of posting the data
+        data: "",
+        success: function(response) {
+        $("#place_for_suggestions").html(response);
+      },
+        error: function(xhr, ajaxOptions, thrownError){
+          //what to do in error
+        },
+  });
+});
