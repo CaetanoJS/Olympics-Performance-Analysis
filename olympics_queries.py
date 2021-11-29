@@ -36,4 +36,14 @@ class OlympicsQueries:
 
     
     def get_countries_with_most_medals(self, num_countries):
-        pass
+        with pymongo.MongoClient() as client:
+            db = client[self.db_name]
+            best_countries = db['Organisation'].find().sort('attributes.statistics.totalRank', pymongo.ASCENDING).limit(num_countries)
+
+            best_countries_dict = {}
+            for country in best_countries:
+                best_countries_dict[country['attributes']['name']] = {'gold':country['attributes']['statistics']['gold'],
+                                                                      'silver':country['attributes']['statistics']['silver'],
+                                                                      'bronze':country['attributes']['statistics']['bronze']}
+
+        return best_countries_dict
