@@ -1,7 +1,6 @@
 import pymongo
 import pandas as pd
-
-from pdb import set_trace as pause
+import numpy as np
 
 hdi2olympics = {
     'Bolivia (Plurinational State of)' : 'Bolivia',
@@ -154,7 +153,7 @@ class OlympicsQueries:
     def get_country_top_10_with_soceconomic_markers(self, gdp_year='2016', hdi_year='2019'):
         top_10_countries = self.get_countries_with_most_medals(10)
         
-        result_df = pd.DataFrame()
+        result_df = pd.DataFrame(columns =['gold','silver', 'bronze', 'gdp 2016', 'hdi 2019'])
 
         for country in top_10_countries.keys():
             if country in list(olympics2gdp.keys()):
@@ -169,7 +168,6 @@ class OlympicsQueries:
             if country_gdp == None:
                 top_10_countries[country]['gdp '+str(gdp_year)] = None
             else:
-                pause()
                 top_10_countries[country]['gdp '+str(gdp_year)] = country_gdp[gdp_year]
             
             if country_hdi == None:
@@ -177,10 +175,13 @@ class OlympicsQueries:
             else:
                 top_10_countries[country]['hdi '+str(hdi_year)] = country_hdi[hdi_year]
 
-            result_df = result_df.append(top_10_countries[country], ignore_index=True)
+            result_df.loc[country] = top_10_countries[country]
         
         result_df.gold = result_df.gold.astype(int)
         result_df.silver = result_df.silver.astype(int)
         result_df.bronze = result_df.bronze.astype(int)
+
+        result_df['gdp '+str(gdp_year)] = result_df['gdp '+str(gdp_year)].apply(lambda x: '${:,}'.format(int(x)) if not np.isnan(x) else 'Invalid')
+        result_df['hdi '+str(hdi_year)] = result_df['hdi '+str(hdi_year)].apply(lambda x: x if not np.isnan(x) else 'Invalid')
 
         return result_df

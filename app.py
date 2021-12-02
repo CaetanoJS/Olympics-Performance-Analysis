@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request
 import pandas as pd
+from olympics_queries import OlympicsQueries
+from pretty_html_table import build_table
 
 app = Flask(__name__)
+
+db_name = 'olympics'
 
 @app.route("/")
 def hello_world():
@@ -46,8 +50,10 @@ def findMedalsByCompetidor():
 
 @app.route('/top_10_countries')
 def top_10_countries():
-    #panda.dataframe
-    panda_table_html = [] #method call
+    olympics_queries = OlympicsQueries(db_name)
+
+    panda_table_html = build_table(olympics_queries.get_country_top_10_with_soceconomic_markers(), 'blue_light', 
+                                   index=True,)
     text_file = open("./templates/tablesRender.html", "w")
     text_file.write(panda_table_html)
     text_file.close()
