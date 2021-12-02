@@ -42,3 +42,10 @@ def findMedalsByCompetidor():
 
     return render_template('graphs.html', text=text, labels=labels, values=values)
 
+
+@app.route('/top_10_countries')
+def top_10_countries():
+    #panda.dataframe
+    panda_table_html = [] #method call
+
+    return render_template('top_10_countries.html', panda_table_html=panda_table_html)
