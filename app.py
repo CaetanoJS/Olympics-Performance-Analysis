@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -47,5 +48,8 @@ def findMedalsByCompetidor():
 def top_10_countries():
     #panda.dataframe
     panda_table_html = [] #method call
+    text_file = open("./templates/tablesRender.html", "w")
+    text_file.write(panda_table_html)
+    text_file.close()
 
-    return render_template('top_10_countries.html', panda_table_html=panda_table_html)
+    return render_template('tablesRender.html')
