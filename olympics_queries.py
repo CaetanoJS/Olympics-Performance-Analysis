@@ -100,15 +100,22 @@ class OlympicsQueries:
             medalists = [participant for participant in country_participants if participant['attributes']['statistics']['total'] > 0]
             top_10_medalists = sorted(medalists, key=lambda  medalist: medalist['attributes']['statistics']['totalRank'])[:10]
 
-            for medalist in top_10_medalists:
-                if medalist['attributes']['participantType'] == 'TEAM':
-                    discipline_id = medalist['relationships']['discipline']['data']['id']
-                    discipline_dict = db['Discipline'].find_one({'id': discipline_id})
-                    discipline_name = discipline_dict['attributes']['name']
+            medalists_dict = {}
 
+            for medalist in top_10_medalists:
+                discipline_id = medalist['relationships']['discipline']['data']['id']
+                discipline_dict = db['Discipline'].find_one({'id': discipline_id})
+                discipline_name = discipline_dict['attributes']['name']
+
+                if medalist['attributes']['participantType'] == 'TEAM':
                     medalist['attributes']['name'] = medalist['attributes']['name'] + ' ' + discipline_name + ' ' + 'Team'
 
-        return [(medalist['attributes']['name'], medalist['attributes']['statistics']['total']) for medalist in top_10_medalists]
+                medalists_dict[medalist['attributes']['name']] = {'gold': medalist['attributes']['statistics']['gold'], 
+                                                                  'silver': medalist['attributes']['statistics']['silver'],
+                                                                  'bronze': medalist['attributes']['statistics']['bronze'],
+                                                                  'discipline': discipline_name}
+
+        return medalists_dict
     
     def get_countries_with_most_medals(self, num_countries):
         with pymongo.MongoClient() as client:
@@ -146,10 +153,6 @@ class OlympicsQueries:
 
         return [country['attributes']['name'] for country in no_medal_countries]
 
-
-
-    # Queries:
-
     def get_country_top_10_with_soceconomic_markers(self, gdp_year='2016', hdi_year='2019'):
         top_10_countries = self.get_countries_with_most_medals(10)
         
@@ -185,3 +188,47 @@ class OlympicsQueries:
         result_df['hdi '+str(hdi_year)] = result_df['hdi '+str(hdi_year)].apply(lambda x: x if not np.isnan(x) else 'Invalid')
 
         return result_df
+
+    def get_top_medalists_df(self, country):
+        
+        top_medalists = self.get_medalists_by_country(country)
+
+        result_df = pd.DataFrame(columns=['gold', 'silver','bronze','discipline'])
+        for top_medalist in top_medalists.keys():
+            result_df.loc[top_medalist] = top_medalists[top_medalist]
+
+        return result_df
+
+
+    def get_medal_count_x_socialeconomics(self, gdp_year='2016', hdi_year='2019'):
+        with pymongo.MongoClient() as client:
+            db = client[self.db_name]
+
+            olympics_countries = db['Organisation'].find({},{'attributes.name': 1, 'attributes.statistics.total': 1})
+
+            medal_count_by_hdi = []
+            medal_count_by_gdp = []
+
+            for country in olympics_countries:
+                country_name = country['attributes']['name']
+                country_medal_count = country['attributes']['statistics']['total']
+
+                if country_name in list(olympics2hdi.keys()):
+                    country_hdi = self.get_hdi_by_country(olympics2hdi[country_name])
+                else:
+                    country_hdi = self.get_hdi_by_country(country_name)
+                if not country_hdi:
+                    continue
+
+                if country_name in list(olympics2gdp.keys()):
+                    country_gdp = self.get_gdp_by_country(olympics2gdp[country_name])
+                else:
+                    country_gdp = self.get_gdp_by_country(country_name)
+                if not country_gdp:
+                    continue
+
+                medal_count_by_hdi.append((country_medal_count, country_hdi[hdi_year]))
+                medal_count_by_gdp.append((country_medal_count, country_gdp[gdp_year]))
+            
+            return {'medal_count_by_hdi': medal_count_by_hdi, 'medal_count_by_gdp': medal_count_by_gdp}
+

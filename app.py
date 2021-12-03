@@ -21,9 +21,13 @@ def countryMedals():
 
 @app.route('/findMedalsByCountry')
 def findByCountry():
+    olympics_queries = OlympicsQueries(db_name)
+
     text = request.args.get('jsdata')
     labels = ['Bronze','Silver','Gold']
-    values = []
+    values = olympics_queries.get_medal_count_by_country(text)
+
+    values = [values['gold'], values['silver'], values['bronze']]
 
     if not values:
         error_messege = 'Country not found'
@@ -37,9 +41,13 @@ def competidorMedals():
 
 @app.route('/findMedalsByCompetidor')
 def findMedalsByCompetidor():
+    olympics_queries = OlympicsQueries(db_name)
+
     text = request.args.get('jsdata')
     labels = ['Bronze','Silver','Gold']
-    values = []
+    values = olympics_queries.get_medal_count_by_competitor(text)
+
+    values = [values['gold'], values['silver'], values['bronze']]
 
     if not values:
         error_messege = 'Competidor not found'
