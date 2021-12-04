@@ -217,18 +217,86 @@ class OlympicsQueries:
                     country_hdi = self.get_hdi_by_country(olympics2hdi[country_name])
                 else:
                     country_hdi = self.get_hdi_by_country(country_name)
-                if not country_hdi:
-                    continue
+                if country_hdi:
+                    medal_count_by_hdi.append((country_medal_count, country_hdi[hdi_year]))
 
                 if country_name in list(olympics2gdp.keys()):
                     country_gdp = self.get_gdp_by_country(olympics2gdp[country_name])
                 else:
                     country_gdp = self.get_gdp_by_country(country_name)
-                if not country_gdp:
-                    continue
-
-                medal_count_by_hdi.append((country_medal_count, country_hdi[hdi_year]))
-                medal_count_by_gdp.append((country_medal_count, country_gdp[gdp_year]))
+                if country_gdp:
+                    medal_count_by_gdp.append((country_medal_count, country_gdp[gdp_year]))
             
             return {'medal_count_by_hdi': medal_count_by_hdi, 'medal_count_by_gdp': medal_count_by_gdp}
 
+    def get_no_medal_countries_by_soceconomics(self, reverse=False, gdp_years=['2014', '2015', '2016'], hdi_years=['2017', '2018', '2019']):
+        
+        no_medal_countries = self.get_countries_with_no_medals()
+
+        country_with_gdp = []
+        country_with_hdi = []
+
+        for country_name in no_medal_countries:
+
+            if country_name in list(olympics2hdi.keys()):
+                country_hdi = self.get_hdi_by_country(olympics2hdi[country_name])
+            else:
+                country_hdi = self.get_hdi_by_country(country_name)
+            if country_hdi:
+                country_with_hdi.append((country_name, np.mean([country_hdi[hdi_year] for hdi_year in hdi_years])))
+
+            if country_name in list(olympics2gdp.keys()):
+                country_gdp = self.get_gdp_by_country(olympics2gdp[country_name])
+            else:
+                country_gdp = self.get_gdp_by_country(country_name)
+            if country_gdp:
+                country_with_gdp.append((country_name, np.mean([country_gdp[gdp_year] for gdp_year in gdp_years])))
+        
+        country_with_hdi = [country for country in country_with_hdi if not np.isnan(country[1]) ]
+        country_with_gdp = [country for country in country_with_gdp if not np.isnan(country[1]) ]
+        
+        return sorted(country_with_gdp, key=lambda x : x[1], reverse=reverse)[:10], sorted(country_with_hdi, key=lambda x : x[1], reverse=reverse)[:10]
+
+    def get_no_medal_best_hdi(self):
+        _, country_with_hdi = self.get_no_medal_countries_by_soceconomics(reverse=True)
+
+        result_df = pd.DataFrame(columns=['hdi avg (2017-2019)'])
+        for country in country_with_hdi:
+            print(country)
+
+            result_df.loc[country[0]] = country[1]
+
+        return result_df
+
+    def get_no_medal_best_gdp(self):
+        country_with_gdp, _ = self.get_no_medal_countries_by_soceconomics(reverse=True)
+
+        result_df = pd.DataFrame(columns=['gdp avg (2014-2016)'])
+        for country in country_with_gdp:
+            print(country)
+
+            result_df.loc[country[0]] = country[1]
+
+        return result_df
+
+    def get_no_medal_worst_hdi(self):
+        _, country_with_hdi = self.get_no_medal_countries_by_soceconomics()
+
+        result_df = pd.DataFrame(columns=['hdi avg (2017-2019)'])
+        for country in country_with_hdi:
+            print(country)
+
+            result_df.loc[country[0]] = country[1]
+
+        return result_df
+
+    def get_no_medal_worst_gdp(self):
+        country_with_gdp, _ = self.get_no_medal_countries_by_soceconomics()
+
+        result_df = pd.DataFrame(columns=['gdp avg (2014-2016)'])
+        for country in country_with_gdp:
+            print(country)
+
+            result_df.loc[country[0]] = country[1]
+
+        return result_df
