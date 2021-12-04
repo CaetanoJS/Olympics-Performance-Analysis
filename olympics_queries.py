@@ -130,6 +130,16 @@ class OlympicsQueries:
 
         return best_countries_dict
 
+    def get_countries_with_most_medals_df(self, num_countries):
+        best_countries = self.get_countries_with_most_medals(10)
+
+        best_countries_df = pd.DataFrame(columns=['gold', 'silver', 'bronze'])
+        for country in best_countries.keys():
+            best_countries_df.loc[country] = best_countries[country]
+
+        return best_countries_df
+
+
     # AVANCADAS
 
     def get_hdi_by_country(self, country_name):
@@ -228,6 +238,17 @@ class OlympicsQueries:
                     medal_count_by_gdp.append((country_medal_count, country_gdp[gdp_year]))
             
             return {'medal_count_by_hdi': medal_count_by_hdi, 'medal_count_by_gdp': medal_count_by_gdp}
+    
+    def get_med_count_soceconomics_scatter_plot(self):
+        med_count_socesonomics = self.get_medal_count_x_socialeconomics()
+
+        medal_count_by_hdi = med_count_socesonomics['medal_count_by_hdi']
+        medal_count_by_gdp = med_count_socesonomics['medal_count_by_gdp']
+
+        hdi_data = [{'x': med_count, 'y': hdi} for med_count, hdi in medal_count_by_hdi]
+        gdp_data = [{'x': med_count, 'y': gdp} for med_count, gdp in medal_count_by_gdp]
+
+        return hdi_data, gdp_data
 
     def get_no_medal_countries_by_soceconomics(self, reverse=False, gdp_years=['2014', '2015', '2016'], hdi_years=['2017', '2018', '2019']):
         

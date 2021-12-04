@@ -86,7 +86,9 @@ def findMedalistByCountry():
 def top10BestCountries():
     olympics_queries = OlympicsQueries(db_name)
 
-    panda_table_html = ''
+    panda_table_html = build_table(olympics_queries.get_countries_with_most_medals_df(10), 
+                                   'blue_light', 
+                                   index=True,)
     text_file = open("./templates/tablesRender.html", "w")
     text_file.write(panda_table_html)
     text_file.close()
