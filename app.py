@@ -94,3 +94,4 @@ def top10BestCountries():
     text_file.close()
 
     return render_template('tablesRender.html')
+    
