@@ -100,4 +100,32 @@ def top10BestCountries():
     text_file.close()
 
     return render_template('tablesRender.html')
-    
+
+@app.route('/topCountriesLowSocialEconomicIndex')
+def topCountriesLowSocialEconomicIndex():
+    olympics_queries = OlympicsQueries(db_name)
+
+    panda_table_html = []
+    text_file = open("./templates/tablesRender.html", "w")
+    text_file.write(panda_table_html)
+    text_file.close()
+
+    return render_template('tablesRender.html')
+
+@app.route('/topCountriesHighSocialEconomicIndex')
+def topCountriesHighSocialEconomicIndex():
+    olympics_queries = OlympicsQueries(db_name)
+
+    panda_table_html = []
+    text_file = open("./templates/tablesRender.html", "w")
+    text_file.write(panda_table_html)
+    text_file.close()
+
+    return render_template('tablesRender.html')
+
+@app.route('/idhGdpPerformance')
+def idhGdpPerformance():
+    text = ''
+    values = []
+    labels = []
+    return render_template('scatterGraph.html', text=text, values=values, labels=labels)
