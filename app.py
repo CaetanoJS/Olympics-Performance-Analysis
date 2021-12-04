@@ -1,3 +1,4 @@
+from re import template
 from flask import Flask, render_template, request
 import pandas as pd
 from olympics_queries import OlympicsQueries
@@ -56,8 +57,8 @@ def findMedalsByCompetidor():
     return render_template('graphs.html', text=text, labels=labels, values=values)
 
 
-@app.route('/top_10_countries')
-def top_10_countries():
+@app.route('/top10Countries')
+def top10Countries():
     olympics_queries = OlympicsQueries(db_name)
 
     panda_table_html = build_table(olympics_queries.get_country_top_10_with_soceconomic_markers(), 'blue_light', 
@@ -67,3 +68,16 @@ def top_10_countries():
     text_file.close()
 
     return render_template('tablesRender.html')
+
+@app.route('/top10MedalistByCountry')
+def top10MedalistByCountry():
+    
+    return render_template('top10MedalistByCountry.html')
+
+@app.route('/findMedalistByCountry')
+def findMedalistByCountry():
+    text = request.args.get('jsdata')
+    labels = []
+    values = []
+
+    return render_template('graphs.html', text=text, labels=labels, values=values)

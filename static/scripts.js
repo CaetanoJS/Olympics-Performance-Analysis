@@ -46,7 +46,22 @@ $('#competidor_medals').click(function(e){
 $('#top_10_countries').click(function(e){
   e.preventDefault();
   $.ajax({
-        url: "/top_10_countries",
+        url: "/top10Countries",
+        type: "get",//type of posting the data
+        data: "",
+        success: function(response) {
+        $("#place_for_suggestions").html(response);
+      },
+        error: function(xhr, ajaxOptions, thrownError){
+          //what to do in error
+        },
+  });
+});
+
+$('#top_10_medalist_by_country').click(function(e){
+  e.preventDefault();
+  $.ajax({
+        url: "/top10MedalistByCountry",
         type: "get",//type of posting the data
         data: "",
         success: function(response) {
