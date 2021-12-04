@@ -43,10 +43,10 @@ $('#competidor_medals').click(function(e){
   });
 });
 
-$('#top_10_countries').click(function(e){
+$('#top_10_countries_with_economical_index').click(function(e){
   e.preventDefault();
   $.ajax({
-        url: "/top10Countries",
+        url: "/top10CountriesWithIndex",
         type: "get",//type of posting the data
         data: "",
         success: function(response) {
@@ -62,6 +62,22 @@ $('#top_10_medalist_by_country').click(function(e){
   e.preventDefault();
   $.ajax({
         url: "/top10MedalistByCountry",
+        type: "get",//type of posting the data
+        data: "",
+        success: function(response) {
+        $("#place_for_suggestions").html(response);
+      },
+        error: function(xhr, ajaxOptions, thrownError){
+          //what to do in error
+        },
+  });
+});
+
+
+$('#top_10_best_countries').click(function(e){
+  e.preventDefault();
+  $.ajax({
+        url: "/top10BestCountries",
         type: "get",//type of posting the data
         data: "",
         success: function(response) {

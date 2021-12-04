@@ -57,8 +57,8 @@ def findMedalsByCompetidor():
     return render_template('graphs.html', text=text, labels=labels, values=values)
 
 
-@app.route('/top10Countries')
-def top10Countries():
+@app.route('/top10CountriesWithIndex')
+def top10CountriesWithIndex():
     olympics_queries = OlympicsQueries(db_name)
 
     panda_table_html = build_table(olympics_queries.get_country_top_10_with_soceconomic_markers(), 'blue_light', 
@@ -81,3 +81,14 @@ def findMedalistByCountry():
     values = []
 
     return render_template('graphs.html', text=text, labels=labels, values=values)
+
+@app.route('/top10BestCountries')
+def top10BestCountries():
+    olympics_queries = OlympicsQueries(db_name)
+
+    panda_table_html = ''
+    text_file = open("./templates/tablesRender.html", "w")
+    text_file.write(panda_table_html)
+    text_file.close()
+
+    return render_template('tablesRender.html')
