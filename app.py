@@ -77,10 +77,16 @@ def top10MedalistByCountry():
 @app.route('/findMedalistByCountry')
 def findMedalistByCountry():
     text = request.args.get('jsdata')
-    labels = []
-    values = []
+    olympics_queries = OlympicsQueries(db_name)
 
-    return render_template('graphs.html', text=text, labels=labels, values=values)
+    panda_table_html = build_table(olympics_queries.get_top_medalists_df(text), 
+                                   'blue_light', 
+                                   index=True,)
+    text_file = open("./templates/tablesRender.html", "w")
+    text_file.write(panda_table_html)
+    text_file.close()
+
+    return render_template('tablesRender.html')
 
 @app.route('/top10BestCountries')
 def top10BestCountries():
