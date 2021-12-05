@@ -89,12 +89,12 @@ $('#top_10_best_countries').click(function(e){
   });
 });
 
-$('#top_10_worst_countries_with_high_IDH_GDP').click(function(e){
+$('#top_10_worst_countries_with_high_IDH').click(function(e){
   e.preventDefault();
   $.ajax({
         url: "/topCountriesLowSocialEconomicIndex",
         type: "get",//type of posting the data
-        data: "",
+        data: {jsdata: 'IDH'},
         success: function(response) {
         $("#place_for_suggestions").html(response);
       },
@@ -104,12 +104,12 @@ $('#top_10_worst_countries_with_high_IDH_GDP').click(function(e){
   });
 });
 
-$('#top_10_worst_countries_with_low_IDH_GDP').click(function(e){
+$('#top_10_worst_countries_with_low_IDH').click(function(e){
   e.preventDefault();
   $.ajax({
         url: "/topCountriesHighSocialEconomicIndex",
         type: "get",//type of posting the data
-        data: "",
+        data: {jsdata: 'IDH'},
         success: function(response) {
         $("#place_for_suggestions").html(response);
       },
@@ -119,12 +119,58 @@ $('#top_10_worst_countries_with_low_IDH_GDP').click(function(e){
   });
 });
 
-$('#idh_gpd_performance_scatter_plot').click(function(e){
+$('#top_10_worst_countries_with_high_GDP').click(function(e){
+  e.preventDefault();
+  $.ajax({
+        url: "/topCountriesLowSocialEconomicIndex",
+        type: "get",//type of posting the data
+        data: {jsdata: 'GDP'},
+        success: function(response) {
+        $("#place_for_suggestions").html(response);
+      },
+        error: function(xhr, ajaxOptions, thrownError){
+          //what to do in error
+        },
+  });
+});
+
+$('#top_10_worst_countries_with_low_GDP').click(function(e){
+  e.preventDefault();
+  $.ajax({
+        url: "/topCountriesHighSocialEconomicIndex",
+        type: "get",//type of posting the data
+        data: {jsdata: 'GDP'},
+        success: function(response) {
+        $("#place_for_suggestions").html(response);
+      },
+        error: function(xhr, ajaxOptions, thrownError){
+          //what to do in error
+        },
+  });
+});
+
+
+$('#idh_performance_scatter_plot').click(function(e){
   e.preventDefault();
   $.ajax({
         url: "/idhGdpPerformance",
         type: "get",//type of posting the data
-        data: "",
+        data: {jsdata: 'IDH'},
+        success: function(response) {
+        $("#place_for_suggestions").html(response);
+      },
+        error: function(xhr, ajaxOptions, thrownError){
+          //what to do in error
+        },
+  });
+});
+
+$('#gpd_performance_scatter_plot').click(function(e){
+  e.preventDefault();
+  $.ajax({
+        url: "/idhGdpPerformance",
+        type: "get",//type of posting the data
+        data: {jsdata: 'GDP'},
         success: function(response) {
         $("#place_for_suggestions").html(response);
       },
