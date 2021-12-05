@@ -103,13 +103,12 @@ def top10BestCountries():
 
 @app.route('/topCountriesLowSocialEconomicIndex')
 def topCountriesLowSocialEconomicIndex():
-    olympics_queries = OlympicsQueries(db_name)
     index = request.args.get('jsdata')
 
     if index == 'IDH':
-        panda_table_html = [] #IDH
+        panda_table_html = '' #IDH
     else:
-        panda_table_html = [] #GDP
+        panda_table_html = '' #GDP
 
     text_file = open("./templates/tablesRender.html", "w")
     text_file.write(panda_table_html)
@@ -119,15 +118,14 @@ def topCountriesLowSocialEconomicIndex():
 
 @app.route('/topCountriesHighSocialEconomicIndex')
 def topCountriesHighSocialEconomicIndex():
-    olympics_queries = OlympicsQueries(db_name)
     index = request.args.get('jsdata')
 
     if index == 'IDH':
-        panda_table_html = [] #IDH
+        panda_table_html = '' #IDH
     else:
-        panda_table_html = [] #GDP
+        panda_table_html = '' #GDP
 
-    panda_table_html = []
+    panda_table_html = ''
     text_file = open("./templates/tablesRender.html", "w")
     text_file.write(panda_table_html)
     text_file.close()
