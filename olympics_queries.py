@@ -283,8 +283,6 @@ class OlympicsQueries:
 
         result_df = pd.DataFrame(columns=['hdi avg (2017-2019)'])
         for country in country_with_hdi:
-            print(country)
-
             result_df.loc[country[0]] = country[1]
 
         return result_df
@@ -294,9 +292,9 @@ class OlympicsQueries:
 
         result_df = pd.DataFrame(columns=['gdp avg (2014-2016)'])
         for country in country_with_gdp:
-            print(country)
-
             result_df.loc[country[0]] = country[1]
+        
+        result_df['gdp avg (2014-2016)'] = result_df['gdp avg (2014-2016)'].apply(lambda x: '${:,}'.format(int(x)))
 
         return result_df
 
@@ -305,8 +303,6 @@ class OlympicsQueries:
 
         result_df = pd.DataFrame(columns=['hdi avg (2017-2019)'])
         for country in country_with_hdi:
-            print(country)
-
             result_df.loc[country[0]] = country[1]
 
         return result_df
@@ -316,8 +312,8 @@ class OlympicsQueries:
 
         result_df = pd.DataFrame(columns=['gdp avg (2014-2016)'])
         for country in country_with_gdp:
-            print(country)
-
             result_df.loc[country[0]] = country[1]
+
+        result_df['gdp avg (2014-2016)'] = result_df['gdp avg (2014-2016)'].apply(lambda x: '${:,}'.format(int(x)))
 
         return result_df

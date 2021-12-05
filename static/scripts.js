@@ -89,7 +89,7 @@ $('#top_10_best_countries').click(function(e){
   });
 });
 
-$('#top_10_worst_countries_with_high_IDH').click(function(e){
+$('#top_10_worst_countries_with_low_IDH').click(function(e){
   e.preventDefault();
   $.ajax({
         url: "/topCountriesLowSocialEconomicIndex",
@@ -104,7 +104,7 @@ $('#top_10_worst_countries_with_high_IDH').click(function(e){
   });
 });
 
-$('#top_10_worst_countries_with_low_IDH').click(function(e){
+$('#top_10_worst_countries_with_high_IDH').click(function(e){
   e.preventDefault();
   $.ajax({
         url: "/topCountriesHighSocialEconomicIndex",
@@ -119,7 +119,7 @@ $('#top_10_worst_countries_with_low_IDH').click(function(e){
   });
 });
 
-$('#top_10_worst_countries_with_high_GDP').click(function(e){
+$('#top_10_worst_countries_with_low_GDP').click(function(e){
   e.preventDefault();
   $.ajax({
         url: "/topCountriesLowSocialEconomicIndex",
@@ -134,7 +134,7 @@ $('#top_10_worst_countries_with_high_GDP').click(function(e){
   });
 });
 
-$('#top_10_worst_countries_with_low_GDP').click(function(e){
+$('#top_10_worst_countries_with_high_GDP').click(function(e){
   e.preventDefault();
   $.ajax({
         url: "/topCountriesHighSocialEconomicIndex",

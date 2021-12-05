@@ -103,12 +103,18 @@ def top10BestCountries():
 
 @app.route('/topCountriesLowSocialEconomicIndex')
 def topCountriesLowSocialEconomicIndex():
+    olympics_queries = OlympicsQueries(db_name)
+
     index = request.args.get('jsdata')
 
     if index == 'IDH':
-        panda_table_html = '' #IDH
+        panda_table_html = build_table(olympics_queries.get_no_medal_worst_hdi(), 
+                                       'blue_light', 
+                                       index=True,) #IDH
     else:
-        panda_table_html = '' #GDP
+        panda_table_html = build_table(olympics_queries.get_no_medal_worst_gdp(), 
+                                       'blue_light', 
+                                       index=True,) #GDP
 
     text_file = open("./templates/tablesRender.html", "w")
     text_file.write(panda_table_html)
@@ -118,14 +124,19 @@ def topCountriesLowSocialEconomicIndex():
 
 @app.route('/topCountriesHighSocialEconomicIndex')
 def topCountriesHighSocialEconomicIndex():
+    olympics_queries = OlympicsQueries(db_name)
+
     index = request.args.get('jsdata')
 
     if index == 'IDH':
-        panda_table_html = '' #IDH
+        panda_table_html = build_table(olympics_queries.get_no_medal_best_hdi(), 
+                                       'blue_light', 
+                                       index=True,) #IDH
     else:
-        panda_table_html = '' #GDP
+        panda_table_html = build_table(olympics_queries.get_no_medal_best_gdp(), 
+                                       'blue_light', 
+                                       index=True,) #GDP
 
-    panda_table_html = ''
     text_file = open("./templates/tablesRender.html", "w")
     text_file.write(panda_table_html)
     text_file.close()
@@ -134,12 +145,16 @@ def topCountriesHighSocialEconomicIndex():
 
 @app.route('/idhGdpPerformance')
 def idhGdpPerformance():
+    olympics_queries = OlympicsQueries(db_name)
+
     text = ''
     index = request.args.get('jsdata')
+
+    hdi_data, gdp_data = olympics_queries.get_med_count_soceconomics_scatter_plot()
+
     if index == 'IDH':
-        values = [] #IDH
+        values = hdi_data #IDH
     else:
-        values = [] #GDP
-    values = []
+        values = gdp_data #GDP
     labels = []
     return render_template('scatterGraph.html', text=text, values=values, labels=labels)
