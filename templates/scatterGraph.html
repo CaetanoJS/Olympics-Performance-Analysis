@@ -1,18 +1,40 @@
 <div class="h1">{{ text }}</div>
-<canvas id="chart" width="900" height="400"></canvas>
+<div class="container" style="display: -webkit-inline-box;">
+    <div class="col-1" style="display: table-cell;
+    vertical-align: middle;">{{ index }}</div>
+    <canvas id="chart" width="900" height="400"class="col-11"></canvas>
+</div>
+<div style="display: block;
+text-align: center;">Medals</div>
 <script>
     var ctx = document.getElementById("chart").getContext("2d");
-    var mixedChart = new Chart(ctx, {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                data: {{ values | safe }},
-                backgroundColor: ["rgba(205, 127, 50, 1)", "rgb(211,211,211)", "rgb(255,215,0)"],
-            }],
-            labels: {{ labels | safe }}
-        },
-        options: {
-            responsive: true
+    var data = {
+    datasets: [{
+        label: "Legend",
+        labels: {{ labels | safe }},
+        data: {{ values | safe }},
+        backgroundColor: "rgb(255, 99, 132)"
+    }]
+}
+
+var options = {
+    plugins: {
+        tooltip: {
+            callbacks: {
+                label: function(ctx) {
+                    let label = ctx.dataset.labels[ctx.dataIndex];
+                    label += " (" + ctx.parsed.x + ", " + ctx.parsed.y + ")";
+                    return label;
+                }
+            }
         }
+    }
+}
+
+scatterChart = new Chart(ctx, {
+    type: "scatter",
+    data: data,
+    options: options
+
 });
 </script> 

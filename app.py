@@ -130,7 +130,7 @@ def topCountriesHighSocialEconomicIndex():
     text_file.write(panda_table_html)
     text_file.close()
 
-    return render_template('tablesRender.html')
+    return render_template('tablesRender.html',)
 
 @app.route('/idhGdpPerformance')
 def idhGdpPerformance():
@@ -142,4 +142,4 @@ def idhGdpPerformance():
         values = [] #GDP
     values = []
     labels = []
-    return render_template('scatterGraph.html', text=text, values=values, labels=labels)
+    return render_template('scatterGraph.html', text=text, values=values, labels=labels, index=index)
