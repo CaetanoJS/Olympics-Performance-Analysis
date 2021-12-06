@@ -150,11 +150,13 @@ def idhGdpPerformance():
     text = ''
     index = request.args.get('jsdata')
 
-    hdi_data, gdp_data = olympics_queries.get_med_count_soceconomics_scatter_plot()
+    hdi_data, hdi_labels, gdp_data, gdp_labels = olympics_queries.get_med_count_soceconomics_scatter_plot()
 
     if index == 'IDH':
         values = hdi_data #IDH
+        labels = hdi_labels
     else:
         values = gdp_data #GDP
-    labels = []
+        labels = gdp_labels
+
     return render_template('scatterGraph.html', text=text, values=values, labels=labels, index=index)

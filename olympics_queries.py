@@ -218,6 +218,8 @@ class OlympicsQueries:
 
             medal_count_by_hdi = []
             medal_count_by_gdp = []
+            medal_count_by_hdi_countries = []
+            medal_count_by_gdp_countries = []
 
             for country in olympics_countries:
                 country_name = country['attributes']['name']
@@ -228,27 +230,40 @@ class OlympicsQueries:
                 else:
                     country_hdi = self.get_hdi_by_country(country_name)
                 if country_hdi:
-                    medal_count_by_hdi.append((country_medal_count, country_hdi[hdi_year]))
+                    year_hdi = country_hdi[hdi_year]
+                    if not np.isnan(year_hdi):
+                        medal_count_by_hdi.append((country_medal_count, year_hdi))
+                        medal_count_by_hdi_countries.append(country_name)
 
                 if country_name in list(olympics2gdp.keys()):
                     country_gdp = self.get_gdp_by_country(olympics2gdp[country_name])
                 else:
                     country_gdp = self.get_gdp_by_country(country_name)
                 if country_gdp:
-                    medal_count_by_gdp.append((country_medal_count, country_gdp[gdp_year]))
+                    year_gdp = country_gdp[gdp_year]
+                    if not np.isnan(year_gdp):
+                        medal_count_by_gdp.append((country_medal_count, year_gdp))
+                        medal_count_by_gdp_countries.append(country_name)
             
-            return {'medal_count_by_hdi': medal_count_by_hdi, 'medal_count_by_gdp': medal_count_by_gdp}
+            return {'medal_count_by_hdi': medal_count_by_hdi, 
+                    'medal_count_by_hdi_countries': medal_count_by_hdi_countries, 
+                    'medal_count_by_gdp': medal_count_by_gdp,
+                    'medal_count_by_gdp_countries': medal_count_by_gdp_countries}
     
     def get_med_count_soceconomics_scatter_plot(self):
         med_count_socesonomics = self.get_medal_count_x_socialeconomics()
 
         medal_count_by_hdi = med_count_socesonomics['medal_count_by_hdi']
+        medal_count_by_hdi_countries = med_count_socesonomics['medal_count_by_hdi_countries']
         medal_count_by_gdp = med_count_socesonomics['medal_count_by_gdp']
+        medal_count_by_gdp_countries = med_count_socesonomics['medal_count_by_gdp_countries']
 
-        hdi_data = [{'x': med_count, 'y': hdi} for med_count, hdi in medal_count_by_hdi]
-        gdp_data = [{'x': med_count, 'y': gdp} for med_count, gdp in medal_count_by_gdp]
+        hdi_data = [{'x': med_count, 'y': hdi} for med_count, hdi in medal_count_by_hdi if not np.isnan(hdi)]
+        hdi_labels = medal_count_by_hdi_countries
+        gdp_data = [{'x': med_count, 'y': gdp} for med_count, gdp in medal_count_by_gdp if not np.isnan(gdp)]
+        gdp_labels = medal_count_by_gdp_countries
 
-        return hdi_data, gdp_data
+        return hdi_data, hdi_labels, gdp_data, gdp_labels
 
     def get_no_medal_countries_by_soceconomics(self, reverse=False, gdp_years=['2014', '2015', '2016'], hdi_years=['2017', '2018', '2019']):
         
